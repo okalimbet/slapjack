@@ -1,0 +1,73 @@
+body {
+  margin: 0%;
+  background-color: #001f3f;
+  font-family: Nunito;
+  color: #CBC9CF;
+  overflow: auto;
+}
+
+header {
+  text-align: center;
+  font-size: 2em;
+}
+
+.win-count {
+  font-size: 1.5vw;
+  text-align: center;
+}
+
+.wrapper {
+  position: fixed;
+}
+
+#cards {
+  position: absolute;
+  display: flex;
+  top: 8vw;
+}
+
+.column {
+  width: 18vw;
+  height: 30vw;
+  margin: 0 7.8vw;
+  border-radius: 1vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card {
+  width: 16vw;
+  height: 25vw;
+  margin: 0;
+  background-color: white;
+  border-radius: 1vw;
+}
+
+#twisted-bottom-card {
+  position: absolute;
+  top: 0vw;
+  opacity: 0.8;
+  right: 42.8vw;
+  transform: rotate(-4deg);
+  z-index: -1;
+}
+
+.card-skin {
+    width: 100%;
+    height: 100%;
+    border-radius: 1vw;
+    opacity: 1;
+}
+
+.left-player-color {
+  box-shadow: 0px 0px 2vw 1vw #ef060e;
+}
+
+.right-player-color {
+  box-shadow: 0px 0px 2vw 1vw #3fef06;
+}
+
+.hidden {
+  opacity: 0;
+}
