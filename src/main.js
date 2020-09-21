@@ -13,7 +13,6 @@ function checkUserKeyControl() {
   else if (event.keyCode == gameOne.playerTwo.keyDeal) {
     gameOne.takeTurn(gameOne.playerTwo)
   }
-
   if (event.keyCode == gameOne.playerOne.keySlap) {
     gameOne.slap(gameOne.playerOne)
   }
