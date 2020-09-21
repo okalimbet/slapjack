@@ -32,22 +32,24 @@ class Game {
   }
 
   createPlayersDecks(leftPlayer, rightPlayer) {
-    var twoPlayerDecks = [leftPlayer.hand, rightPlayer.hand]
-    for (var i = 0; i < twoPlayerDecks.length; i++) {
-      var firstPlayer = twoPlayerDecks[i]
-      for (var k = this.cardsDeck.length-1; k >=0; k--) {
-        var dealingCard = this.cardsDeck[k]
-          if(firstPlayer.length < 26) {
-          firstPlayer.push(this.cardsDeck[k])
-          this.cardsDeck.splice(k, 1)
-        }
+    var length = this.cardsDeck.length
+    leftPlayer.clearHands()
+    rightPlayer.clearHands()
+    for (var i = 0; i < length; i++) {
+      if (i % 2 === 0) {
+        leftPlayer.addCard(this.cardsDeck[i])
+      }
+      else {
+        rightPlayer.addCard(this.cardsDeck[i])
       }
     }
+    this.cardsDeck = []
   }
 
   initiateTheGame() {
     this.createDeck()
     this.shuffleDeck(this.cardsDeck)
+    this.middleDeck = []
     this.createPlayersDecks(this.playerOne, this.playerTwo)
     this.currentPlayer = this.playerOne
   }
@@ -56,11 +58,53 @@ class Game {
       if(player != this.currentPlayer) {
         return
       }
-      this.middleDeck.push(player.playCard())
+      this.middleDeck.unshift(player.playCard()[0])
       this.currentPlayer = this.currentPlayer == this.playerOne ? this.playerTwo : this.playerOne
   }
 
+  getMiddleDeckCards(currentPlayer) {
+    currentPlayer.addCards(this.middleDeck)
+    this.middleDeck = []
+    this.playerOne.checkIsOutOfCards()
+    this.playerTwo.checkIsOutOfCards()
+  }
+
+  getOtherPlayer(otherPlayer) {
+    return otherPlayer == this.playerOne ? this.playerTwo : this.playerOne
+  }
+
   slap(player) {
-    console.log(event.keyCode)
+
+    var topCard = (this.middleDeck.length > 0) ? this.middleDeck[0].rank : null
+    var secondCard = (this.middleDeck.length > 1) ? this.middleDeck[1].rank : null
+    var thirdCard = (this.middleDeck.length > 2) ? this.middleDeck[2].rank : null
+    var otherPlayer = this.getOtherPlayer(player)
+
+    if(topCard === 'jack') {
+      this.jackSlap(player)
+      return
+    }
+    else if (topCard === secondCard) {
+      this.getMiddleDeckCards(player)
+      return
+    }
+    else if (topCard === thirdCard) {
+      this.getMiddleDeckCards(player)
+      return
+    }
+    else {
+      otherPlayer.addCardToBottom(player.removeTopCard())
+    }
+  }
+
+  jackSlap(player) {
+    var otherPlayer = this.getOtherPlayer(player)
+    if(otherPlayer.outOfCards == true) {
+      player.wins += 1
+      this.initiateTheGame()
+    }
+    else {
+      this.getMiddleDeckCards(player.removeTopCard)
+    }
   }
 }
