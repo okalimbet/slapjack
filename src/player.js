@@ -6,15 +6,28 @@ class Player {
     this.keyDeal = keyDeal
     this.keySlap = keySlap
     this.outOfCards = true
+    this.cardsLeft = 0
+  }
+
+  showPlayersCards() {
+    this.cardsLeft = this.hand.length
+    return this.cardsLeft
+  }
+
+  hasCards() {
+    return this.hand.length > 0
   }
 
   playCard() {
-    var lostCard = this.hand.splice(0, 1)
-    return lostCard
+    if(this.hand.length > 0) {
+      var lostCard = this.hand.splice(0, 1)
+      return lostCard
+    }
+    return
   }
 
   addCard(card) {
-    this.hand.push(card)
+    this.hand.unshift(card)
     this.outOfCards = false
   }
 

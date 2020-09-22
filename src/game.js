@@ -46,10 +46,20 @@ class Game {
     this.cardsDeck = []
   }
 
+  getTopMiddleDeckCard() {
+    if(this.middleDeck === undefined || this.middleDeck.length == 0) {
+      return cardImages[0]
+    }
+    else {
+      return this.middleDeck[0].image
+    }
+  }
+
   initiateTheGame() {
     this.createDeck()
     this.shuffleDeck(this.cardsDeck)
     this.middleDeck = []
+    this.getTopMiddleDeckCard()
     this.createPlayersDecks(this.playerOne, this.playerTwo)
     this.currentPlayer = this.playerOne
   }
@@ -58,8 +68,21 @@ class Game {
       if(player != this.currentPlayer) {
         return
       }
-      this.middleDeck.unshift(player.playCard()[0])
-      this.currentPlayer = this.currentPlayer == this.playerOne ? this.playerTwo : this.playerOne
+      if (this.middleDeck.length < 52 && player.hasCards()) {
+        this.middleDeck.unshift(player.playCard()[0])
+        this.switchPlayer(this.getOtherPlayer(player))
+        // this.currentPlayer = this.currentPlayer == this.playerOne ? this.playerTwo : this.playerOne
+      }
+      else if (this.middleDeck.length < 52 && !player.hasCards()) {
+
+        // this.currentPlayer = this.currentPlayer == this.playerOne ? this.playerTwo : this.playerOne
+      }
+  }
+
+  switchPlayer(otherPlayer) {
+    if(otherPlayer.hasCards()) {
+      this.currentPlayer = otherPlayer
+    }
   }
 
   getMiddleDeckCards(currentPlayer) {
@@ -93,18 +116,28 @@ class Game {
       return
     }
     else {
-      otherPlayer.addCardToBottom(player.removeTopCard())
+      if(player.hasCards()) {
+        otherPlayer.addCardToBottom(player.removeTopCard())
+        return
+      }
+      else if (!player.hasCards()) {
+        this.winTheGame(otherPlayer)
+      }
     }
+  }
+
+  winTheGame(player) {
+    player.wins += 1
+    startTheGame()
   }
 
   jackSlap(player) {
     var otherPlayer = this.getOtherPlayer(player)
-    if(otherPlayer.outOfCards == true) {
-      player.wins += 1
-      this.initiateTheGame()
+    if(!otherPlayer.hasCards()) {
+      this.winTheGame(player)
     }
     else {
-      this.getMiddleDeckCards(player.removeTopCard)
+      this.getMiddleDeckCards(player)
     }
   }
 }
