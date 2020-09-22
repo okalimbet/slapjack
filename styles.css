@@ -1,35 +1,50 @@
+html {
+  height: 100%;
+}
+
 body {
   margin: 0%;
   background-color: #001f3f;
   font-family: Nunito;
   color: #CBC9CF;
   overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+main {
+  width: 100%;
 }
 
 header {
   text-align: center;
   font-size: 2em;
+  width: 92%;
 }
 
 .win-count {
   font-size: 1.5vw;
   text-align: center;
+  margin: 2em 0;
+
 }
 
 .wrapper {
-  position: fixed;
+  height: 100%;
+  margin: 0;
 }
 
 #cards {
   position: absolute;
   display: flex;
-  top: 8vw;
+  top: auto;
+  margin: 4vh 0;
+  width: 92%;
 }
 
 .column {
-  width: 18vw;
-  height: 30vw;
-  margin: 0 7.8vw;
+  width: 13vw;
+  height: 26vw;
+  margin: 0 8.8vw;
   border-radius: 1vw;
   display: flex;
   align-items: center;
@@ -37,18 +52,65 @@ header {
 }
 
 .card {
-  width: 16vw;
-  height: 25vw;
+  width: 13vw;
+  height: 22vw;
   margin: 0;
   background-color: white;
   border-radius: 1vw;
+}
+
+#cards-counts{
+  width: 92%;
+  margin: 1% 1%;
+  height: 0vh;
+  padding: 2vh 0;
+}
+
+#game-buttons {
+  top: 28em;
+  margin: 35% 1%;
+  width: 92%;
+  align-content: center;
+  text-align: center;
+}
+
+#clear-game-button {
+  margin: 0 0 0 1em;
+}
+
+#start-game-button {
+  margin: 0 1em 0 0;
+}
+
+.buttons {
+  border: none;
+  border-radius: 1em;
+  width: 6em;
+  height: 2em;
+  box-shadow: 0 0 14px 1px #a877d2;
+}
+
+.cards-left {
+  margin: 0 0vw;
+  white-space: nowrap;
+  font-size: 2vw;
+}
+
+#player-one-count {
+  float: left;
+  margin-left: 11%;
+}
+
+#player-two-count {
+  float: right;
+  margin-right: 13%;
 }
 
 #twisted-bottom-card {
   position: absolute;
   top: 0vw;
   opacity: 0.8;
-  right: 42.8vw;
+  right: 40.8vw;
   transform: rotate(-4deg);
   z-index: -1;
 }
