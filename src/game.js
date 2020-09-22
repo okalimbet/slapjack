@@ -71,11 +71,9 @@ class Game {
       if (this.middleDeck.length < 52 && player.hasCards()) {
         this.middleDeck.unshift(player.playCard()[0])
         this.switchPlayer(this.getOtherPlayer(player))
-        // this.currentPlayer = this.currentPlayer == this.playerOne ? this.playerTwo : this.playerOne
       }
-      else if (this.middleDeck.length < 52 && !player.hasCards()) {
-
-        // this.currentPlayer = this.currentPlayer == this.playerOne ? this.playerTwo : this.playerOne
+      else if (this.middleDeck.length === 52 && !player.hasCards()) {
+        this.getMiddleDeckCards(player)
       }
   }
 
@@ -88,8 +86,8 @@ class Game {
   getMiddleDeckCards(currentPlayer) {
     currentPlayer.addCards(this.middleDeck)
     this.middleDeck = []
-    this.playerOne.checkIsOutOfCards()
-    this.playerTwo.checkIsOutOfCards()
+    this.playerOne.hasCards()
+    this.playerTwo.hasCards()
   }
 
   getOtherPlayer(otherPlayer) {
@@ -105,15 +103,12 @@ class Game {
 
     if(topCard === 'jack') {
       this.jackSlap(player)
-      return
     }
     else if (topCard === secondCard) {
-      this.getMiddleDeckCards(player)
-      return
+      return true
     }
     else if (topCard === thirdCard) {
-      this.getMiddleDeckCards(player)
-      return
+      return true
     }
     else {
       if(player.hasCards()) {
@@ -126,11 +121,6 @@ class Game {
     }
   }
 
-  winTheGame(player) {
-    player.wins += 1
-    startTheGame()
-  }
-
   jackSlap(player) {
     var otherPlayer = this.getOtherPlayer(player)
     if(!otherPlayer.hasCards()) {
@@ -139,5 +129,25 @@ class Game {
     else {
       this.getMiddleDeckCards(player)
     }
+  }
+
+    checkTheSlapConditions (player) {
+      if(this.slap(player)) {
+        var otherPlayer = this.getOtherPlayer(player)
+        if(!player.hasCards()) {
+          this.winTheGame(otherPlayer)
+        }
+        else {
+          this.getMiddleDeckCards(player)
+        }
+      }
+    }
+
+  winTheGame(player) {
+    player.wins += 1
+    player.saveToStorage(player)
+    displayWinScore()
+    this.initiateTheGame()
+    displayPlayerCardsCount()
   }
 }
