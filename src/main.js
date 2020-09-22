@@ -1,35 +1,35 @@
-var playerOneCount = document.querySelector("#player-one-count")
-var playerTwoCount = document.querySelector("#player-two-count")
-var middleDeckCardImg = document.querySelector("#middle-deck-card")
 var playerOneWinCount = document.querySelector("#player-one-win")
-var playerOneWinCount = document.querySelector("#player-one-win")
+var playerTwoWinCount = document.querySelector("#player-two-win")
 var middleDeck = document.querySelector("#middle-deck")
-var playerOneDeck = document.querySelector("#player-one")
-var playerTwoDeck = document.querySelector("#player-two")
-var startGameButton = document.querySelector("#start-game-button")
 
-var middleCardDeck = document.querySelector("#middle-card .card" )
+var startGameButton = document.querySelector("#start-game-button")
+var clearButton = document.querySelector("#clear-game-button")
 
 var gameInstance
 var topMiddleDeckCard
-
-var winCount
+var parsedPlayersScore = []
 
 //EVENT LISTENERS
 window.addEventListener("keyup", checkUserKeyControl)
+window.addEventListener("load", function() {
+  hideDeckIfNoCards(middleDeck)
+  displayWinScore()
+})
 startGameButton.addEventListener("click",  startTheGame)
-window.addEventListener("load", hideDeckIfNoCards(middleDeck))
+clearButton.addEventListener("click", resetWinScores)
 
 //FUNCTIONS
 function startTheGame(playerOneName, playerTwoName) {
-  gameInstance = new Game("Player 1", "Player 2")
+  gameInstance = new Game("playerOne", "playerTwo")
   gameInstance.initiateTheGame()
+  displayPlayerCardsCount()
 }
 
 function checkUserKeyControl() {
   if(!gameInstance) {
     return
   }
+
   if (event.keyCode == gameInstance.playerOne.keyDeal) {
     gameInstance.takeTurn(gameInstance.playerOne)
     highlightPlayerTurn()
@@ -38,36 +38,43 @@ function checkUserKeyControl() {
     gameInstance.takeTurn(gameInstance.playerTwo)
     highlightPlayerTurn()
   }
+
   if (event.keyCode == gameInstance.playerOne.keySlap) {
-    gameInstance.slap(gameInstance.playerOne)
+    gameInstance.checkTheSlapConditions (gameInstance.playerOne)
     highlightPlayerTurn()
   }
   else if (event.keyCode == gameInstance.playerTwo.keySlap) {
-    gameInstance.slap(gameInstance.playerTwo)
+    gameInstance.checkTheSlapConditions (gameInstance.playerTwo)
     highlightPlayerTurn()
   }
+
   displayMiddleDeckCard()
-  displayPlayerCounts()
-  removePlayersDeck()
+  displayPlayerCardsCount()
+  displayPlayersDeck()
 }
 
 function highlightPlayerTurn() {
-  if(gameInstance.currentPlayer !== gameInstance.playerOne) {
+  var middleCardDeck = document.querySelector("#middle-card .card" )
+  if(gameInstance.currentPlayer == gameInstance.playerOne) {
     middleCardDeck.classList.remove("right-player-color")
     middleCardDeck.classList.add("left-player-color")
   }
-  else if (gameInstance.currentPlayer !== gameInstance.playerTwo) {
+  else if (gameInstance.currentPlayer == gameInstance.playerTwo) {
     middleCardDeck.classList.remove("left-player-color")
     middleCardDeck.classList.add("right-player-color")
   }
 }
 
-function displayPlayerCounts() {
+function displayPlayerCardsCount() {
+  var playerOneCount = document.querySelector("#player-one-count")
+  var playerTwoCount = document.querySelector("#player-two-count")
   playerOneCount.innerText = `Cards: ${gameInstance.playerOne.showPlayersCards()}`
   playerTwoCount.innerText = `Cards: ${gameInstance.playerTwo.showPlayersCards()}`
 }
 
-function removePlayersDeck() {
+function displayPlayersDeck() {
+  var playerOneDeck = document.querySelector("#player-one")
+  var playerTwoDeck = document.querySelector("#player-two")
   if(gameInstance.playerOne.cardsLeft === 0) {
     hideDeckIfNoCards(playerOneDeck)
   }
@@ -82,7 +89,40 @@ function removePlayersDeck() {
   }
 }
 
+function getScoreFromStorage() {
+  var scores = Object.values(localStorage)
+  for (var i = 0; i < scores.length; i++) {
+      var savedScore = scores[i];
+      parsedPlayersScore.push(JSON.parse(savedScore))
+  }
+}
+
+function displayWinScore() {
+  if(localStorage.length === 0) {
+    playerOneWinCount.innerText = `WINS: 0`
+    playerTwoWinCount.innerText = `WINS: 0`
+    return;
+  }
+  else {
+    getScoreFromStorage()
+    for (var i = 0; i < parsedPlayersScore.length; i++) {
+      var newScore = parsedPlayersScore[i]
+
+      if(newScore.player === "playerOne") {
+        playerOneWinCount.innerText = `WINS: ${newScore.score}`
+      }
+      else if(newScore.player === "playerTwo") {
+        playerTwoWinCount.innerText = `WINS: ${newScore.score}`
+      }
+      else {
+        return
+      }
+    }
+  }
+}
+
 function displayMiddleDeckCard() {
+  var middleDeckCardImg = document.querySelector("#middle-deck-card")
   topMiddleDeckCard = gameInstance.getTopMiddleDeckCard()
 
   if(topMiddleDeckCard === cardImages[0]) {
@@ -101,4 +141,9 @@ function unhideDeckIfNoCards(deck) {
 
 function hideDeckIfNoCards(deck) {
     deck.classList.add("hidden")
+}
+
+function resetWinScores() {
+  localStorage.clear()
+  displayWinScore()
 }

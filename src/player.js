@@ -5,7 +5,6 @@ class Player {
     this.hand = []
     this.keyDeal = keyDeal
     this.keySlap = keySlap
-    this.outOfCards = true
     this.cardsLeft = 0
   }
 
@@ -28,28 +27,20 @@ class Player {
 
   addCard(card) {
     this.hand.unshift(card)
-    this.outOfCards = false
   }
 
   addCards(cards) {
     this.hand = this.hand.concat(cards)
-    this.outOfCards = false
     this.shuffleDeck()
-  }
-
-  checkIsOutOfCards() {
-      this.outOfCards = this.hand.length == 0
   }
 
   removeTopCard() {
     var card = this.hand.splice(0, 1)[0]
-    this.checkIsOutOfCards()
     return card
   }
 
   addCardToBottom(card) {
     this.hand.push(card)
-    this.checkIsOutOfCards()
   }
 
   clearHands() {
@@ -65,7 +56,12 @@ class Player {
     }
   }
 
-  saveToStorage() {
-
+  saveToStorage(player) {
+    var playerWinCount = {
+      player: player.id,
+      score: player.wins
+    }
+    var stringifiedPlayerScore = JSON.stringify(playerWinCount)
+    localStorage.setItem(`${player.id}`, stringifiedPlayerScore)
   }
 }
