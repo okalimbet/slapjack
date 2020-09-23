@@ -47,6 +47,10 @@ class Player {
     this.hand = []
   }
 
+  clearScore() {
+    this.wins = 0
+  }
+
   shuffleDeck() {
     for (var i = this.hand.length-1; i > 0; i--) {
       var randomIndex = Math.floor(Math.random() * i)

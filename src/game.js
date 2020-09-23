@@ -62,6 +62,8 @@ class Game {
     this.getTopMiddleDeckCard()
     this.createPlayersDecks(this.playerOne, this.playerTwo)
     this.currentPlayer = this.playerOne
+    displayWinScore()
+    displayPlayerCardsCount()
   }
 
   takeTurn(player) {
@@ -146,8 +148,6 @@ class Game {
   winTheGame(player) {
     player.wins += 1
     player.saveToStorage(player)
-    displayWinScore()
     this.initiateTheGame()
-    displayPlayerCardsCount()
   }
 }
