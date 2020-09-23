@@ -12,16 +12,16 @@ var parsedPlayersScore = []
 //EVENT LISTENERS
 window.addEventListener("keyup", checkUserKeyControl)
 window.addEventListener("load", function() {
-  hideDeckIfNoCards(middleDeck)
-  displayWinScore()
+  startTheGame("playerOne", "playerTwo")
 })
 startGameButton.addEventListener("click",  startTheGame)
 clearButton.addEventListener("click", resetWinScores)
 
 //FUNCTIONS
 function startTheGame(playerOneName, playerTwoName) {
-  gameInstance = new Game("playerOne", "playerTwo")
+  gameInstance = new Game(playerOneName, playerTwoName)
   gameInstance.initiateTheGame()
+  hideDeckIfNoCards(middleDeck)
   displayPlayerCardsCount()
 }
 
@@ -29,7 +29,7 @@ function checkUserKeyControl() {
   if(!gameInstance) {
     return
   }
-
+  
   if (event.keyCode == gameInstance.playerOne.keyDeal) {
     gameInstance.takeTurn(gameInstance.playerOne)
     highlightPlayerTurn()
@@ -109,9 +109,11 @@ function displayWinScore() {
       var newScore = parsedPlayersScore[i]
 
       if(newScore.player === "playerOne") {
+        gameInstance.playerOne.wins = newScore.score
         playerOneWinCount.innerText = `WINS: ${newScore.score}`
       }
       else if(newScore.player === "playerTwo") {
+        gameInstance.playerTwo.wins = newScore.score
         playerTwoWinCount.innerText = `WINS: ${newScore.score}`
       }
       else {
@@ -122,6 +124,7 @@ function displayWinScore() {
 }
 
 function displayMiddleDeckCard() {
+
   var middleDeckCardImg = document.querySelector("#middle-deck-card")
   topMiddleDeckCard = gameInstance.getTopMiddleDeckCard()
 
@@ -145,5 +148,7 @@ function hideDeckIfNoCards(deck) {
 
 function resetWinScores() {
   localStorage.clear()
+  gameInstance.playerOne.clearScore()
+  gameInstance.playerTwo.clearScore()
   displayWinScore()
 }
