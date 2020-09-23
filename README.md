@@ -1,7 +1,7 @@
 
 ---
 # SlapJack - a simple card game to have a good time!
-<img width="1198" alt="Screen Shot 2020-09-22 at 6 41 44 PM" src="https://user-images.githubusercontent.com/66269306/93952697-bbc36f80-fd06-11ea-812b-9319a976c808.png">
+<img width="1047" alt="Screen Shot 2020-09-22 at 7 49 48 PM" src="https://user-images.githubusercontent.com/66269306/93955401-e6b0c200-fd0c-11ea-8e59-d9900ed77c77.png">
 
 ---
 ## Table of Contents
@@ -116,6 +116,8 @@ By default, the Player 1 (left) gets to go first. Players alternate turns playin
 
 When one player loses all cards, this player has the last chance to come back to the game. The opponent starts dealing cards in a row and if the player slaps JACK, this player takes the middle deck and the game continues. If the player slaps anything else (including DOUBLE and SANDWICH) the game ends, their opponent wins. The game also ends if the opponent slaps JACK first.
 
+Players can click `Rules` button to review controls and rules.
+
 ![Simple gameplay sample](https://media.giphy.com/media/r6RFFhOxkYGNCKf0GP/giphy.gif)
 
 <details>
@@ -161,7 +163,6 @@ Function `saveToStorage()` in a `player.js` is only responsible for savind playe
 
 ## Roadmap
 * In the next iteration, we hope to add:
- * Ability for players to pull a menu to look up the rules
  * Save the games to continue them in the future
  * Opportunity for players to create nicknames
  * Possibility for players to stylize the game by choosing their colors and changing the background.
