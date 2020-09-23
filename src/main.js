@@ -22,6 +22,7 @@ function startTheGame(playerOneName, playerTwoName) {
   gameInstance = new Game(playerOneName, playerTwoName)
   gameInstance.initiateTheGame()
   hideDeckIfNoCards(middleDeck)
+  displayWinScore()
   displayPlayerCardsCount()
 }
 
@@ -29,7 +30,7 @@ function checkUserKeyControl() {
   if(!gameInstance) {
     return
   }
-  
+
   if (event.keyCode == gameInstance.playerOne.keyDeal) {
     gameInstance.takeTurn(gameInstance.playerOne)
     highlightPlayerTurn()
